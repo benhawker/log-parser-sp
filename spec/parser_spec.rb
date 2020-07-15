@@ -11,21 +11,21 @@ describe Parser do
 
       subject { described_class.new.parse }
 
-      it 'returns a collection of hashes with url and ip keys' do
-        expect(subject[0]).to have_key(:ip)
-        expect(subject[0]).to have_key(:url)
+      it 'returns a hash with array keys of the correct size' do
+        expect(subject).to be_a Hash
+        expect(subject['/contact/']).to be_an Array
+        expect(subject['/contact/'].count).to eq 2
       end
 
-      it 'returns an array of hashes of the correct size' do
-        expect(subject).to be_an Array
-        expect(subject[0]).to be_a Hash
-
-        expect(subject.size).to eq 15
-      end
-
-      it 'separates the log data into url and ip correctly' do
-        expect(subject[0][:url]).to eq 'contact'
-        expect(subject[0][:ip]).to eq '39.203.28.182'
+      it 'stores each ip for each path' do
+        expect(subject).to eq({
+          "/contact/"=> ["39.203.28.182", "163.37.141.48"],
+          "products/1"=>["138.195.110.114", "117.198.72.249", "117.198.72.249"],
+          "/about"=>["19.47.73.203"],
+          "/products/3"=>["19.47.73.203", "245.141.61.189", "245.141.61.189"],
+          "/index"=>["19.47.73.203", "61.64.28.106", "19.47.73.203", "61.64.28.106"],
+          "/home"=>["184.99.73.243", "184.99.73.243"]
+        })
       end
     end
 
@@ -34,15 +34,21 @@ describe Parser do
       subject { described_class.new(log_path: log_path).parse }
 
       it 'returns an array of hashes of the correct size' do
-        expect(subject).to be_an Array
-        expect(subject[0]).to be_a Hash
-
-        expect(subject.size).to eq 10
+        expect(subject).to be_a Hash
+        expect(subject['/contact/']).to be_an Array
+        expect(subject['/contact/'].count).to eq 1
       end
 
-      it 'separates the log data into url and ip correctly' do
-        expect(subject[0][:url]).to eq 'products/2'
-        expect(subject[0][:ip]).to eq '225.183.113.22'
+      it 'stores each ip for each path' do
+        expect(subject).to eq({
+          "/products/2"=>["225.183.113.22"],
+          "/home"=>["225.183.113.22", "225.183.113.22"],
+          "/contact/"=>["245.141.61.189"],
+          "/index"=>["122.255.244.161"],
+          "/about"=>["138.222.28.220", "228.32.104.207"],
+          "/products/3"=>["138.222.28.220"],
+          "products/1"=>["117.198.72.249"]
+        })
       end
     end
   end

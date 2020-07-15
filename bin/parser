@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require './lib/parser'
+
+log_path = ARGV.first
+
+if log_path && !File.file?(log_path)
+  warn 'The path to the log provided is not valid. Please amend it & try again.'
+  exit(1)
+end
+
+log_data = if log_path
+             puts 'Running process with the log specified'
+             puts '-' * 10
+
+             Parser.new(log_path: log_path).parse
+           else
+             puts 'Running process with the default log'
+             puts '-' * 10
+
+             Parser.new.parse
+end
+
+[SortTypes::ByPageViews, SortTypes::ByUniquePageViews].each do |klass|
+  Formatter.new(log_data: log_data, sort_klass: klass).format
+end

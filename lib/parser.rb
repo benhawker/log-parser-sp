@@ -1,13 +1,22 @@
 # frozen_string_literal: true
 
 # Parser - read from the logfile.
-# Returns the logfile data in an array of hashes
+# Returns the logfile data in a hash keyed by the path
+# with values as an array of ip addresses for each visit
+# to the given path
 #
 # Usage:
 #   parser = Parser.new.read(log_path: "path_to/file")
 #   parser.parse
 
 require 'uri'
+require 'pry'
+
+require './lib/formatter'
+require './lib/sorter'
+
+require './lib/sort_types/by_page_views'
+require './lib/sort_types/by_unique_page_views'
 
 class Parser
   DEFAULT_LOG_PATH = 'source/webserver.log'
@@ -17,19 +26,14 @@ class Parser
   end
 
   def parse
-    File.open(log_path).each_with_object([]) do |line, obj|
-      arr = line.split(' ')
+    log_data = Hash.new { |hash, key| hash[key] = [] }
 
-      obj << { url: format_url(arr[0]), ip: arr[1] }
+    File.open(@log_path).each do |line|
+      path, ip = line.split
+
+      log_data[path] << ip
     end
-  end
 
-  private
-
-  attr_reader :log_path
-
-  # Remove first & last / for consistency
-  def format_url(url)
-    url.gsub(%r{\A/}, '').gsub(%r{/\z}, '')
+    log_data
   end
 end
