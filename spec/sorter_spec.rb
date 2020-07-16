@@ -7,7 +7,7 @@ describe Sorter do
 
   let(:sort_klass) { SortTypes::ByPageViews }
   let(:log_data) do
-    { 
+    {
       '/home' => ['245.141.61.189'],
       '/faqs' => ['245.141.61.189', '245.141.61.199']
     }

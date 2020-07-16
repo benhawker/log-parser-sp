@@ -2,7 +2,6 @@
 
 A Ruby `2.7.1` program that parses a basic log file, sorts the data & present it in the terminal.
 
-===================
 
 ### Requirements:
 
@@ -24,13 +23,10 @@ b. Returns the following:
          etc...
 ```
 
-===================
-
 ### Testing:
 
 Run the specs with `rspec`.
 
-===================
 
 ### Usage:
 
@@ -56,7 +52,7 @@ $ bin/parser source/
 ```
 
 
-When successful the output of the format:
+Sample output:
 ```
 $ bin/parser
 >> Page views by total views (desc order): 

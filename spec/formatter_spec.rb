@@ -13,7 +13,7 @@ describe Formatter do
   subject { described_class.new(log_data: log_data, sort_klass: SortTypes::ByPageViews) }
 
   describe '#present' do
-    let(:expected) { "Page views by total views (desc order): \n/faqs 2 visits \n/home 1 visits \n"}
+    let(:expected) { "Page views by total views (desc order): \n/faqs 2 visits \n/home 1 visits \n" }
 
     it 'returns correctly formatted text' do
       expect { subject.format }.to output(expected).to_stdout
