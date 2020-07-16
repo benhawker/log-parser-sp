@@ -10,17 +10,7 @@ if log_path && !File.file?(log_path)
   exit(1)
 end
 
-log_data = if log_path
-             puts 'Running process with the log specified'
-             puts '-' * 10
-
-             Parser.new(log_path: log_path).parse
-           else
-             puts 'Running process with the default log'
-             puts '-' * 10
-
-             Parser.new.parse
-end
+log_data = Parser.new(log_path: log_path).parse
 
 [SortTypes::ByPageViews, SortTypes::ByUniquePageViews].each do |klass|
   Formatter.new(log_data: log_data, sort_klass: klass).format

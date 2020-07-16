@@ -13,7 +13,8 @@ class Formatter
   end
 
   def format
-    title; formatted_counts
+    title
+    formatted_counts
   end
 
   private
